@@ -1,5 +1,3 @@
-<!-- TODO: rewrite this component. figure out if we're using controlled or uncontrolled -->
-
 <script lang="ts">
 	import { createRadioGroup, melt } from '@melt-ui/svelte';
 
@@ -10,7 +8,8 @@
 		orientation = 'vertical',
 		theme = 'dark',
 		value = $bindable(defaultValue),
-		readonly = false
+		readonly = false,
+		onchange = (val: string) => {}
 	}: {
 		// name of hidden input
 		name?: string;
@@ -24,6 +23,7 @@
 		theme?: 'dark' | 'light';
 		value?: string;
 		readonly?: boolean;
+		onchange?: (val: string) => void;
 	} = $props();
 
 	const {
@@ -33,9 +33,8 @@
 	} = createRadioGroup({
 		defaultValue,
 		onValueChange: ({ curr, next }) => {
-			if (readonly) {
-				return curr;
-			}
+			if (readonly) return curr;
+			onchange(next);
 			return next;
 		}
 	});
